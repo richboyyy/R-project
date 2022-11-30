@@ -14,7 +14,7 @@ library(tidyr)
 
 #Sets the database to data
 data <- read_csv2("data.csv")
-
+options(scipen=4)
 #Creates a variable for each column of the database
 
 #Way of representing chemical structures using ASCII characters
@@ -58,16 +58,20 @@ ggplot(data) +
   theme_bw()
 
 
-#Plot RingCount x NumHAcceptors
+#Plot NumHAcceptors x NumHDonors, colour = NumRotableBonds
 
 ggplot(data) +
-  aes(x = RingCount, y = NumHAcceptors, colour = NumAtoms) +
+  aes(
+    x = NumHAcceptors,
+    y = NumHDonors,
+    colour = NumRotableBonds
+  ) +
   geom_point(shape = "circle", size = 1.5) +
   scale_color_viridis_c(option = "viridis", direction = 1) +
-  labs(title = "RingCount x NumHAcceptors") +
-  theme_bw()
+  labs(title = "NumHAcceptors x NumHDonors") +
+  theme_minimal()
 
-#Plot ExactmolWt x NumHAcceptors 
+#Plot ExactmolWt x NumHAcceptorsm colour = NumHDonors
 
 ggplot(data) +
   aes(x = ExactMolWt, y = NumHAcceptors, colour = NumHDonors) +
@@ -90,16 +94,14 @@ ggplot(data) +
   labs(title = "NumRotableBonds x NumHAcceptors") +
   theme_minimal()
 
-#Plot NumHAcceptors x NumAtoms, colour = ExactMolWt
+#Plot NumAtoms x RingCount, colour = RingCount
 
 ggplot(data) +
-  aes(x = NumHAcceptors, y = NumAtoms, colour = ExactMolWt) +
+  aes(x = NumAtoms, y = RingCount, colour = RingCount) +
   geom_point(shape = "circle", size = 1.5) +
   scale_color_viridis_c(option = "viridis", direction = 1) +
-  labs(title = "NumHAcceptors x NumAtoms") +
+  labs(title = "NumAtoms x RingCount") +
   theme_bw()
-
-
 
 #Max, Mean, min of each descriptor.
 
@@ -123,11 +125,9 @@ Max_Mean_Min <- data.frame(Descriptors = c("NumAtoms", "ExactMolWt", "NumRotable
                           min(NumHAcceptors),
                           min(NumHDonors)),
                  stringsAsFactors = FALSE)
-
 Max_Mean_Min
 
 #Histogram NumAtoms
-library(ggplot2)
 
 ggplot(data) +
   aes(x = NumAtoms) +
@@ -167,6 +167,12 @@ ggplot(data) +
   labs(title = "Histogram NumHDonors") +
   theme_bw()
 
+#Histogram NumRotableBonds
+ggplot(data) +
+  aes(x = NumRotableBonds) +
+  geom_histogram(bins = 30L, fill = "#54402A") +
+  labs(title = "Histogram NumRotableBonds") +
+  theme_bw()
 
 
 
